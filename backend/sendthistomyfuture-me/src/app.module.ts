@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import * as Joi from 'joi';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -12,6 +13,9 @@ import config from './config';
       envFilePath: '.env',
       isGlobal: true,
       load: [config],
+      validationSchema: Joi.object({
+        MONGO_URI: Joi.string().required(),
+      }),
     }),
     DatabaseModule,
   ],
