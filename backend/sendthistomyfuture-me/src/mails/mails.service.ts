@@ -1,10 +1,20 @@
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 import { CreateMailDto } from './dto/create-mail.dto';
-import { UpdateMailDto } from './dto/update-mail.dto';
+import { Mail } from './entities/mail.entity';
 
 @Injectable()
 export class MailsService {
-  create(createMailDto: CreateMailDto) {
-    return 'This action adds a new mail';
+  constructor(@InjectModel(Mail.name) private mailModel: Model<Mail>) {}
+
+  create({ body, mail, send_date, random_date }: CreateMailDto) {
+    const newMail = new this.mailModel({
+      mail,
+      body,
+      send_date,
+      verification_code: '23',
+    });
+    return newMail.save();
   }
 }
