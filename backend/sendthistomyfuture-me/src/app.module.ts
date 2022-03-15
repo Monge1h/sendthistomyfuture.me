@@ -16,6 +16,7 @@ import config from './config';
       load: [config],
       validationSchema: Joi.object({
         MONGO_URI: Joi.string().required(),
+        SECRET_KEY: Joi.string().required(),
       }),
     }),
     DatabaseModule,
