@@ -17,6 +17,9 @@ import config from './config';
       validationSchema: Joi.object({
         MONGO_URI: Joi.string().required(),
         SECRET_KEY: Joi.string().required(),
+        EMAIL_SERVICE: Joi.string().required(),
+        EMAIL_USER: Joi.string().required(),
+        EMAIL_PASSWORD: Joi.string().required(),
       }),
     }),
     DatabaseModule,
