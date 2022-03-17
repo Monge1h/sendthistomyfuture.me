@@ -13,7 +13,7 @@ export class Mail extends Document {
   send_date: string;
 
   @Prop({ required: true, default: false })
-  verifed: boolean;
+  verified: boolean;
 
   @Prop({ required: true })
   verification_code: string;
