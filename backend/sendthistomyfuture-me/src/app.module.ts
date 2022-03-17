@@ -20,6 +20,7 @@ import config from './config';
         EMAIL_SERVICE: Joi.string().required(),
         EMAIL_USER: Joi.string().required(),
         EMAIL_PASSWORD: Joi.string().required(),
+        CLIENT_URL: Joi.string().required(),
       }),
     }),
     DatabaseModule,
