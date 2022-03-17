@@ -9,5 +9,6 @@ export default registerAs('config', () => {
     email_service: process.env.EMAIL_SERVICE,
     email_user: process.env.EMAIL_USER,
     email_password: process.env.EMAIL_PASSWORD,
+    client_url: process.env.CLIENT_URL,
   };
 });
