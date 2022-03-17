@@ -1,7 +1,6 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Post, Body, Put, Param } from '@nestjs/common';
 import { MailsService } from './mails.service';
 import { CreateMailDto } from './dto/create-mail.dto';
-import { UpdateMailDto } from './dto/update-mail.dto';
 
 @Controller('mails')
 export class MailsController {
@@ -12,4 +11,8 @@ export class MailsController {
     return this.mailsService.create(createMailDto);
   }
 
+  @Put(':verificationCode')
+  verifyEmail(@Param('verificationCode') verificationCode: string) {
+    return this.mailsService.verificateEmail(verificationCode);
+  }
 }
