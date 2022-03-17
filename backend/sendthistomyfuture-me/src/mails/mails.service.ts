@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { MailerService } from '@nestjs-modules/mailer';
@@ -35,5 +35,19 @@ export class MailsService {
       verification_code,
     });
     return newMail.save();
+  }
+
+  verificateEmail(verificationCode: string) {
+    const verified_email = this.mailModel
+      .findOneAndUpdate(
+        { verification_code: verificationCode },
+        { verified: true },
+        { new: true },
+      )
+      .exec();
+    if (!verified_email) {
+      throw new NotFoundException(`Email not found`);
+    }
+    return verified_email;
   }
 }
