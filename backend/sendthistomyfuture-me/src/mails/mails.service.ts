@@ -3,10 +3,12 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { MailerService } from '@nestjs-modules/mailer';
 import { ConfigService } from '@nestjs/config';
+import { DateTime } from 'luxon';
+import { Cron } from '@nestjs/schedule';
 
 import { CreateMailDto } from './dto/create-mail.dto';
 import { Mail } from './entities/mail.entity';
-import { encrypt, hashUrl } from '../helper/crypto';
+import { decrypt, encrypt, hashUrl } from '../helper/crypto';
 
 @Injectable()
 export class MailsService {
@@ -49,5 +51,30 @@ export class MailsService {
       throw new NotFoundException(`Email not found`);
     }
     return verified_email;
+  }
+
+  private async sendTodayEmails() {
+    const today = DateTime.now().toFormat('yyyy-MM-dd');
+    // 📬 Get all mails from today
+    let mails = await this.mailModel.find({ send_date: today, verified: true });
+    Promise.all(
+      mails.map((mail) => {
+        let body = decrypt(mail.body);
+        let email = decrypt(mail.mail);
+        this.mailerService.sendMail({
+          to: email,
+          subject: 'From you to you. || sendthistomyfuture.me',
+          text: body,
+        });
+      }),
+    );
+    // 🔥 delete all mails from today
+    this.mailModel.deleteMany({ send_date: today}).exec()
+    return mails;
+  }
+
+  @Cron('0 12 * * *')
+  handleCron() {
+    this.sendTodayEmails();
   }
 }
