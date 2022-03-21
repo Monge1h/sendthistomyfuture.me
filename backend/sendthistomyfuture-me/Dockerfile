@@ -1,4 +1,3 @@
-
 FROM node:current-alpine
 
 ENV NODE_VERSION 16.13.2
@@ -8,4 +7,6 @@ ADD package.json package-lock.json ./
 ADD . .
 
 RUN npm install --silent
-ENTRYPOINT [ "npm", "run", "docker" ]
+RUN npm run build
+
+ENTRYPOINT [ "npm", "run", "start:prod" ]
