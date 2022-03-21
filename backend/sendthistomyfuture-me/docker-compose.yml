@@ -1,0 +1,14 @@
+#docker-compose.yml
+version: '3.8'
+
+services:
+
+  server:
+
+    build: .
+    env_file:
+      - .env
+    ports:
+      - ${PORT}:${PORT}
+
+    restart: unless-stopped
