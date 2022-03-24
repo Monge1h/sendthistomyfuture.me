@@ -1,4 +1,5 @@
 import type { NextPage } from 'next'
+import Link from 'next/link'
 import Head from 'next/head'
 import {
   Box,
@@ -13,13 +14,6 @@ import {
 const Home: NextPage = () => {
   return (
     <>
-      <Head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap"
-          rel="stylesheet"
-        />
-      </Head>
-
       <Flex  height={'100vh'} alignItems={'center'} justifyContent={'center'}>
         <Stack
           as={Box}
@@ -41,16 +35,18 @@ const Home: NextPage = () => {
             align={'center'}
             alignSelf={'center'}
             position={'relative'}>
-            <Button
-              colorScheme={'green'}
-              bg={'blue.400'}
-              rounded={'full'}
-              px={6}
-              _hover={{
-                bg: 'blue.500',
-              }}>
-              Get Started
-            </Button>
+            <Link href="/send-email">
+              <Button
+                colorScheme={'green'}
+                bg={'blue.400'}
+                rounded={'full'}
+                px={6}
+                _hover={{
+                  bg: 'blue.500',
+                }}>
+                Get Started
+              </Button>
+            </Link>
           </Stack>
         </Stack>
       </Flex>
