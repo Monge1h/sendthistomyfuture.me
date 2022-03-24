@@ -1,6 +1,4 @@
-import { useRouter } from 'next/router';
 import type { NextPage } from 'next'
-import Head from 'next/head'
 import {
   Box,
   Heading,
@@ -10,14 +8,8 @@ import {
 } from '@chakra-ui/react';
 1
 
-import { axiosClient } from '../../helper/axiosClient';
-
-const verificationPage: NextPage = () => {
-  const router = useRouter()
-  const { id } = router.query
-  axiosClient.put(`/mails/${id}`)
+const Confirmation: NextPage = () => {
   return (
-	  
     <>
       <Flex  height={'100vh'} alignItems={'center'} justifyContent={'center'}>
         <Stack
@@ -29,9 +21,9 @@ const verificationPage: NextPage = () => {
             fontWeight={600}
             fontSize={{ base: '2xl', sm: '4xl', md: '6xl' }}
             lineHeight={'110%'}>
-            Now that your email is verified, <br />
+            We send you a email to verificate your {" "}
             <Text as={'span'} color={'blue.400'}>
-			we will send your letter soon. 
+             mail.
             </Text>
           </Heading>
         </Stack>
@@ -40,4 +32,4 @@ const verificationPage: NextPage = () => {
   );
 }
 
-export default verificationPage
+export default Confirmation
