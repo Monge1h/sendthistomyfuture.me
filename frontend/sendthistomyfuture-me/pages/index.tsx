@@ -24,7 +24,7 @@ const Home: NextPage = () => {
             fontWeight={600}
             fontSize={{ base: '2xl', sm: '4xl', md: '6xl' }}
             lineHeight={'110%'}>
-            You can't talk with your past,<br />
+            You can&apos;t talk with your past,<br />
             <Text as={'span'} color={'blue.400'}>
               but you can send a letter to your future self.
             </Text>
@@ -35,7 +35,7 @@ const Home: NextPage = () => {
             align={'center'}
             alignSelf={'center'}
             position={'relative'}>
-            <Link href="/send-email">
+            <Link href="/send-email" passHref>
               <Button
                 colorScheme={'green'}
                 bg={'blue.400'}

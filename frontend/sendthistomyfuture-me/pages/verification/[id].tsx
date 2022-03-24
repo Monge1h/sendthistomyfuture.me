@@ -12,7 +12,7 @@ import {
 
 import { axiosClient } from '../../helper/axiosClient';
 
-const verificationPage: NextPage = () => {
+const VerificationPage: NextPage = () => {
   const router = useRouter()
   const { id } = router.query
   axiosClient.put(`/mails/${id}`)
@@ -40,4 +40,4 @@ const verificationPage: NextPage = () => {
   );
 }
 
-export default verificationPage
+export default VerificationPage
