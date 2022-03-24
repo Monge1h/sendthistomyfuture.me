@@ -5,16 +5,17 @@ import {
   Box,
   Heading,
   Text,
-  Button,
   Stack,
   Flex,
 } from '@chakra-ui/react';
 1
 
+import { axiosClient } from '../../helper/axiosClient';
+
 const verificationPage: NextPage = () => {
   const router = useRouter()
   const { id } = router.query
-  
+  axiosClient.put(`/mails/${id}`)
   return (
 	  
     <>
