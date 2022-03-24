@@ -20,7 +20,7 @@ import { SingleDatepicker } from "chakra-dayzed-datepicker";
 import { axiosClient } from "../helper/axiosClient";
 import { DateTime } from "luxon";
 
-const emailForm: NextPage = () => {
+const EmailForm: NextPage = () => {
 	const [date, setDate] = useState(new Date());
 	const [mail, setMail] = useState('');
   	const [body, setBody] = useState('');
@@ -107,4 +107,4 @@ const emailForm: NextPage = () => {
 	);
 };
 
-export default emailForm;
+export default EmailForm;
