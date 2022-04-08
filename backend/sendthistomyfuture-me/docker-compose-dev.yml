@@ -1,3 +1,4 @@
+
 #docker-compose.yml
 version: '3.8'
 
@@ -6,6 +7,8 @@ services:
   mongodb:
     container_name: mongodb
     image: mongo
+    env_file:
+      - .env
     restart: always
     environment:
       - MONGO_INITDB_ROOT_USERNAME=nestuser
@@ -24,7 +27,7 @@ services:
     env_file:
       - .env
     ports:
-      - 8000:3000
+      - ${PORT}:${PORT}
 
     links:
       - mongodb
@@ -38,24 +41,9 @@ services:
 
     restart: unless-stopped
 
-  proxy:
-    image: caddy:2
-    env_file:
-      - .env
-    command: "caddy reverse-proxy --from '{https://api.url.com}' --to {http://ip server}"
-    restart: unless-stopped
-    volumes:
-      - "caddy_data:/data"
-    depends_on:
-      - server
-    ports:
-      - "443:443"
-      - "80:80"
-
 networks:
   core_service_network:
     driver: bridge
 
 volumes:
-  caddy_data:
   mongo-data: {}
