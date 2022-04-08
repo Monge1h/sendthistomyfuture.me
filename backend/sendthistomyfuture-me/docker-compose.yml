@@ -3,12 +3,59 @@ version: '3.8'
 
 services:
 
+  mongodb:
+    container_name: mongodb
+    image: mongo
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=nestuser
+      - MONGO_INITDB_ROOT_PASSWORD=nestuser
+      - MONGO_INITDB_DATABASE=nestdb
+    volumes:
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo-js:ro
+      - ./mongo-db:/data/db
+    ports:
+          - "27017:27017"
+    networks:
+      - core_service_network  
   server:
 
     build: .
     env_file:
       - .env
     ports:
-      - ${PORT}:${PORT}
+      - 8000:3000
+
+    links:
+      - mongodb
+    depends_on:
+      - mongodb
+    environment:
+      WAIT_HOST: mongodb:27017
+    
+    networks:
+      - core_service_network
 
     restart: unless-stopped
+
+  proxy:
+    image: caddy:2
+    env_file:
+      - .env
+    command: "caddy reverse-proxy --from '{https://api.url.com}' --to {http://ip server}"
+    restart: unless-stopped
+    volumes:
+      - "caddy_data:/data"
+    depends_on:
+      - server
+    ports:
+      - "443:443"
+      - "80:80"
+
+networks:
+  core_service_network:
+    driver: bridge
+
+volumes:
+  caddy_data:
+  mongo-data: {}
