@@ -19,7 +19,19 @@ export class MailsService {
   ) {}
 
   create({ body, mail, send_date, random_date }: CreateMailDto) {
-    let verification_code = hashUrl();
+    const verification_code = hashUrl();
+
+    if (random_date === true) {
+      const date_now = DateTime.now();
+      const date_treshold = DateTime.now().plus({ month: 6 });
+      // generate random date between now and six month towards
+      send_date = new Date(
+        date_now.toMillis() +
+          Math.random() * (date_treshold.toMillis() - date_now.toMillis()),
+      )
+        .toISOString()
+        .split('T')[0];
+    }
 
     this.mailerService.sendMail({
       to: mail,
@@ -56,11 +68,14 @@ export class MailsService {
   private async sendTodayEmails() {
     const today = DateTime.now().toFormat('yyyy-MM-dd');
     // 📬 Get all mails from today
-    let mails = await this.mailModel.find({ send_date: today, verified: true });
+    const mails = await this.mailModel.find({
+      send_date: today,
+      verified: true,
+    });
     Promise.all(
       mails.map((mail) => {
-        let body = decrypt(mail.body);
-        let email = decrypt(mail.mail);
+        const body = decrypt(mail.body);
+        const email = decrypt(mail.mail);
         this.mailerService.sendMail({
           to: email,
           subject: 'From you to you. || sendthistomyfuture.me',
@@ -69,7 +84,7 @@ export class MailsService {
       }),
     );
     // 🔥 delete all mails from today
-    this.mailModel.deleteMany({ send_date: today}).exec()
+    this.mailModel.deleteMany({ send_date: today }).exec();
     return mails;
   }
 
