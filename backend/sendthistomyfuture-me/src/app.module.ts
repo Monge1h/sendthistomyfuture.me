@@ -15,7 +15,7 @@ import config from './config';
       isGlobal: true,
       load: [config],
       validationSchema: Joi.object({
-        MONGO_URI: Joi.string().required(),
+        DATABASE_URL: Joi.string().required(),
         SECRET_KEY: Joi.string().required(),
         EMAIL_SERVICE: Joi.string().required(),
         EMAIL_USER: Joi.string().required(),
