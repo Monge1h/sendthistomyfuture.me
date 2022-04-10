@@ -2,13 +2,36 @@
 version: '3.8'
 
 services:
-
   server:
 
     build: .
     env_file:
       - .env
     ports:
-      - ${PORT}:${PORT}
+      - 8000:3000
+
+    networks:
+      - core_service_network
 
     restart: unless-stopped
+
+  proxy:
+    image: caddy:2
+    env_file:
+      - .env
+    command: "caddy reverse-proxy --from '${API_URL}' --to ${IP_SERVER}"
+    restart: unless-stopped
+    volumes:
+      - "caddy_data:/data"
+    depends_on:
+      - server
+    ports:
+      - "443:443"
+      - "80:80"
+
+networks:
+  core_service_network:
+    driver: bridge
+
+volumes:
+  caddy_data:

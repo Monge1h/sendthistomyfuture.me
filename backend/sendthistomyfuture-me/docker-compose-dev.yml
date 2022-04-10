@@ -1,0 +1,49 @@
+
+#docker-compose.yml
+version: '3.8'
+
+services:
+
+  mongodb:
+    container_name: mongodb
+    image: mongo
+    env_file:
+      - .env
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=nestuser
+      - MONGO_INITDB_ROOT_PASSWORD=nestuser
+      - MONGO_INITDB_DATABASE=nestdb
+    volumes:
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo-js:ro
+      - ./mongo-db:/data/db
+    ports:
+          - "27017:27017"
+    networks:
+      - core_service_network  
+  server:
+
+    build: .
+    env_file:
+      - .env
+    ports:
+      - ${PORT}:${PORT}
+
+    links:
+      - mongodb
+    depends_on:
+      - mongodb
+    environment:
+      WAIT_HOST: mongodb:27017
+    
+    networks:
+      - core_service_network
+
+    restart: unless-stopped
+
+networks:
+  core_service_network:
+    driver: bridge
+
+volumes:
+  mongo-data: {}
